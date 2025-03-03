@@ -1,0 +1,22 @@
+GET http://localhost:5000/notes
+
+###
+POST http://localhost:5000/add-notes
+Content-Type: application/json
+
+{
+    "title": "Prak TCC",
+    "content": "ngerjain tugas duaa"
+}
+
+###
+PUT http://localhost:5000/edit-notes/1
+Content-Type: application/json
+
+{
+    "title": "test",
+    "content": "test"
+}
+
+###
+DELETE http://localhost:5000/delete-notes/1
