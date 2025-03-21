@@ -4,7 +4,7 @@ import NotesList from "./components/NotesList";
 import NoteEditor from "./components/NoteEditor";
 import { FaPlus } from "react-icons/fa"; // Importing the FontAwesome Plus Icon
 import './App.css';
-import { BASE_URL } from "../utils";
+import { BASE_URL } from "./utils";
 
 const App = () => {
   const [notes, setNotes] = useState([]);
