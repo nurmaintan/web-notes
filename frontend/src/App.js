@@ -4,6 +4,7 @@ import NotesList from "./components/NotesList";
 import NoteEditor from "./components/NoteEditor";
 import { FaPlus } from "react-icons/fa"; // Importing the FontAwesome Plus Icon
 import './App.css';
+import { BASE_URL } from "../utils";
 
 const App = () => {
   const [notes, setNotes] = useState([]);
@@ -12,7 +13,7 @@ const App = () => {
 
   // Fetch all notes from the API
   useEffect(() => {
-    axios.get('http://localhost:5000/notes')
+    axios.get(`${BASE_URL}/notes`)
       .then((response) => {
         setNotes(response.data);
       })
@@ -23,7 +24,7 @@ const App = () => {
 
   // Handle delete note
   const handleDelete = (id) => {
-    axios.delete(`http://localhost:5000/delete-notes/${id}`)
+    axios.delete(`${BASE_URL}/delete-notes/${id}`)
       .then(() => {
         setNotes(notes.filter(note => note.id !== id));
       })
@@ -41,7 +42,7 @@ const App = () => {
   const handleSaveNote = (note) => {
     if (selectedNote) {
       // Update the note on the backend
-      axios.put(`http://localhost:5000/edit-notes/${selectedNote.id}`, note)
+      axios.put(`${BASE_URL}/edit-notes/${selectedNote.id}`, note)
         .then((response) => {
           // After successful update, update the state locally
           setNotes(notes.map(n => n.id === selectedNote.id ? { ...n, title: note.title, content: note.content } : n));
@@ -52,7 +53,7 @@ const App = () => {
         });
     } else {
       // Create a new note if there's no selected note
-      axios.post('http://localhost:5000/add-notes', note)
+      axios.post(`${BASE_URL}/add-notes`, note)
         .then((response) => {
           setNotes([...notes, response.data]);
           setSelectedNote(null); // Reset the form after creating the note
