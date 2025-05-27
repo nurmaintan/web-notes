@@ -10,10 +10,13 @@ dotenv.config();
 
 const app = express();
 
-// CORS setup untuk mengizinkan credentials (cookie) dari frontend
+// CORS setup: hanya izinkan frontend
 app.use(
   cors({
-    origin: true, // Atau ganti dengan asal frontend, misal: "http://localhost:3000"
+    origin: [
+      "http://localhost:3000",
+      "https://frontend-notes-intan.ew.r.appspot.com",
+    ],
     credentials: true,
   })
 );

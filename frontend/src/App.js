@@ -1,15 +1,62 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import NotesList from "./components/NotesList";
 import NoteEditor from "./components/NoteEditor";
-import { FaPlus } from "react-icons/fa"; // Importing the FontAwesome Plus Icon
+import { FaPlus, FaUserCircle, FaSignOutAlt } from "react-icons/fa";
 import './App.css';
+import { AuthProvider, AuthContext } from "./contexts/AuthContext";
+import RegisterPage from "./pages/RegisterPage";
+import LoginPage from "./pages/LoginPage";
+import ProtectedRoute from "./components/ProtectedRoute";
 import { BASE_URL } from "./utils";
 
-const App = () => {
+const ProfileMenu = () => {
+  const { user, logout } = React.useContext(AuthContext);
+  const [open, setOpen] = useState(false);
+  const menuRef = useRef();
+
+  // Close menu if click outside
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  return (
+    <div className="profile-menu-container" ref={menuRef}>
+      <button className="profile-icon-btn" onClick={() => setOpen((v) => !v)}>
+        <FaUserCircle size={34} />
+        <span className="profile-username">{user?.username}</span>
+      </button>
+      {open && (
+        <div className="profile-dropdown-modern">
+          <div className="profile-info">
+            <FaUserCircle size={40} className="profile-avatar" />
+            <div>
+              <div className="profile-name">{user?.username}</div>
+              <div className="profile-email-modern">{user?.email}</div>
+            </div>
+          </div>
+          <button className="profile-logout-btn-modern" onClick={logout}>
+            <FaSignOutAlt style={{ marginRight: 10, verticalAlign: "middle" }} />
+            Logout
+          </button>
+        </div>
+      )}
+    </div>
+  );
+};
+
+const MainApp = () => {
   const [notes, setNotes] = useState([]);
   const [selectedNote, setSelectedNote] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");  
+  const { user, logout } = React.useContext(AuthContext);
 
   // Fetch all notes from the API
   useEffect(() => {
@@ -77,8 +124,11 @@ const App = () => {
 
   return (
     <div className="app-container">
+      {/* Profile icon di kanan atas */}
+      <ProfileMenu />
       <div className="notes-list-container">
         <h2>🐻 All Notes</h2>
+        {/* Tombol Logout */}
         
         {/* Search Input */}
         <input
@@ -104,5 +154,24 @@ const App = () => {
     </div>
   );
 };
+
+const App = () => (
+  <AuthProvider>
+    <Router>
+      <Routes>
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route
+          path="/*"
+          element={
+            <ProtectedRoute>
+              <MainApp />
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
+    </Router>
+  </AuthProvider>
+);
 
 export default App;
