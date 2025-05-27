@@ -1,0 +1,55 @@
+### NOTES ENDPOINTS
+
+GET http://localhost:5000/notes
+
+###
+POST http://localhost:5000/add-notes
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJ1c2VyQGV4YW1wbGUuY29tIiwidXNlcm5hbWUiOiJ1c2VyYmFydSIsImNyZWF0ZWRBdCI6IjIwMjUtMDUtMjdUMDQ6NDE6NTAuMDAwWiIsInVwZGF0ZWRBdCI6IjIwMjUtMDUtMjdUMDQ6NDE6NTAuMDAwWiIsImlhdCI6MTc0ODMyMDkxNywiZXhwIjoxNzQ4MzIwOTQ3fQ.WMKPOITJeNQtjeokNYETLBlurVJWu10DflKcEFVGiBo
+Content-Type: application/json
+
+{
+  "title": "Contoh Judul",
+  "content": "Isi catatan baru"
+}
+
+###
+PUT http://localhost:5000/edit-notes/1
+Content-Type: application/json
+
+{
+  "title": "Judul Diupdate",
+  "content": "Isi catatan diupdate"
+}
+
+###
+DELETE http://localhost:5000/delete-notes/1
+
+### USER ENDPOINTS
+
+###
+POST http://localhost:5000/register
+Content-Type: application/json
+
+{
+  "email": "user@example.com",
+  "username": "userbaru",
+  "password": "passwordku"
+}
+
+###
+POST http://localhost:5000/login
+Content-Type: application/json
+
+{
+  "email": "user@example.com",
+  "password": "passwordku"
+}
+
+###
+GET http://localhost:5000/users
+
+###
+GET http://localhost:5000/token
+
+###
+DELETE http://localhost:5000/logout
